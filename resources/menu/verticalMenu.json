@@ -1,0 +1,111 @@
+{
+  "menu": [
+    {
+      "url": "/admin-dashboard",
+      "name": "Dashboard",
+      "icon": "menu-icon tf-icons ti ti-smart-home",
+      "slug": "admin.dashboard",
+      "roles": [
+        "admin"
+      ]
+    },
+    {
+      "url": "/supervisor-dashboard",
+      "name": "Dashboard",
+      "icon": "menu-icon tf-icons ti ti-smart-home",
+      "slug": "supervisor.dashboard",
+      "roles": [
+        "supervisor"
+      ]
+    },
+    {
+      "url": "/manager-dashboard",
+      "name": "Dashboard",
+      "icon": "menu-icon tf-icons ti ti-smart-home",
+      "slug": "manager.dashboard",
+      "roles": [
+        "manager"
+      ]
+    },
+    {
+      "url": "/",
+      "name": "Dashboard",
+      "icon": "menu-icon tf-icons ti ti-smart-home",
+      "slug": "pages-home",
+      "roles": [
+        "karyawan"
+      ]
+    },
+    {
+      "url": "/tasks",
+      "name": "Task",
+      "icon": "menu-icon tf-icons ti ti-list-check",
+      "slug": "tasks.index",
+      "roles": [
+        "admin",
+        "supervisor",
+        "manager",
+        "karyawan"
+      ]
+    },
+    {
+      "url": "/pages-content",
+      "name": "Content",
+      "icon": "menu-icon tf-icons ti ti-book",
+      "slug": "pages-content",
+      "roles": [
+        "admin",
+        "supervisor",
+        "manager",
+        "karyawan"
+      ]
+    },
+    {
+      "url": "/pages-performance",
+      "name": "My Performance",
+      "icon": "menu-icon tf-icons ti ti-crown",
+      "slug": "pages-performance",
+      "roles": [
+        "admin",
+        "supervisor",
+        "manager",
+        "karyawan"
+      ]
+    },
+    {
+      "url": "/pages-reimbursment",
+      "name": "Reimbursement",
+      "icon": "menu-icon tf-icons ti ti-receipt",
+      "slug": "pages-reimburs",
+      "roles": [
+        "admin",
+        "supervisor",
+        "manager",
+        "karyawan"
+      ]
+    },
+    {
+      "url": "/users",
+      "name": "User Management",
+      "icon": "menu-icon tf-icons ti ti-users",
+      "slug": "users.index",
+      "roles": [
+        "superadmin",
+        "admin"
+      ]
+    },
+    {
+      "url": "/logout",
+      "name": "Logout",
+      "icon": "menu-icon tf-icons ti ti-logout",
+      "slug": "logout",
+      "roles": [
+        "superadmin",
+        "admin",
+        "supervisor",
+        "manager",
+        "karyawan"
+      ]
+    }
+  ]
+}

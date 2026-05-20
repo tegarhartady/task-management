@@ -1,0 +1,11 @@
+<svg width="200" height="60" viewBox="0 0 200 60" xmlns="http://www.w3.org/2000/svg">
+  <!-- Dark square background -->
+  <rect x="10" y="5" width="45" height="45" rx="8" fill="#1a1a1a"/>
+
+  <!-- TN text in white -->
+  <text x="32.5" y="42" font-family="Arial, sans-serif" font-size="28" font-weight="bold" fill="white" text-anchor="middle">SN</text>
+
+  <!-- Text content -->
+  <!-- <text x="62" y="20" font-family="Arial, sans-serif" font-size="10" fill="#666666" letter-spacing="1">KARANG TARUNA</text> -->
+  <text x="62" y="40" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#1a1a1a">SUPERNATA.</text>
+</svg>

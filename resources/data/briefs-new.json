@@ -1,0 +1,26 @@
+{
+    "all": {
+        "total": 131,
+        "items": [
+            {
+                "id": 1,
+                "brand": "SUPERNATA",
+                "type": "REEL",
+                "status": "DRAFT",
+                "status_label": "Draft - Pending Approval",
+                "is_ai": false,
+                "title": "[Reels] Yang keliaran sepele ternyata gangggu",
+                "author": "dila",
+                "created_by": "dila",
+                "date": "19 Apr 2026, 14:30 WIB",
+                "comments": 0,
+                "assigned_to": [],
+                "working_on_count": 0,
+                "hook": "Yang bikin iled tuh kadang bukan bentuknya",
+                "concept": "Konsep ini menceritakan apa kualitas furnitur dalam jangka panjang bukan ditentukankan oleh desain, tapi oleh finishing permukaan. Furnitur tanpa finishing yang kuat akan cepat terlihat kusam, ternodai, dan tidak awet apalagi permukaan harian (air, gesekan, dll). Sebalikmya penggunaan HPL sebagai finishing memberikan perlindungan permukaan dan tahan lama merupakan sering digunakan.",
+                "visual_direction": "Permukaaan furnitur caling sering kena permakaan harian (air dan gesekan) Close-up aktivites harian lap meja, taruh gelas, geser barang, highlight bekas halus di surface",
+                "voiceover": "Tapi pas kena cahaya, sok tiba-tiba keliatan beleng, kusam, atau ada bintik-bintik. Padahal sinyanya biasa aja. Masih keliatan rapi."
+            }
+        ]
+    }
+}
