@@ -74,6 +74,8 @@ class PageContent extends Controller
         'type' => $request->type,
         'search' => $request->search,
       ],
+      'brands' => \App\Models\Brand::where('is_active', true)->get(),
+      'contentTypes' => \App\Models\ContentType::where('is_active', true)->get(),
     ]);
   }
 
@@ -86,7 +88,9 @@ class PageContent extends Controller
   public function create()
   {
     $karyawan = User::where('role', 'karyawan')->where('is_active', true)->get();
-    return view('content.pages.pages-content-create', compact('karyawan'));
+    $brands = \App\Models\Brand::where('is_active', true)->get();
+    $contentTypes = \App\Models\ContentType::where('is_active', true)->get();
+    return view('content.pages.pages-content-create', compact('karyawan', 'brands', 'contentTypes'));
   }
 
   public function store(Request $request)

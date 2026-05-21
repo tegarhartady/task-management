@@ -39,9 +39,9 @@ $configData = Helper::appClasses();
               <label class="form-label" for="brand">Brand <span class="text-danger">*</span></label>
               <select class="form-select" id="brand" name="brand" required>
                 <option value="">Select Brand</option>
-                <option value="SUPERNATA">Supernata</option>
-                <option value="DEKORNATA">Dekornata</option>
-                <option value="CRAFTNATA">Craftnata</option>
+                @foreach($brands as $brand)
+                  <option value="{{ $brand->name }}">{{ $brand->name }}</option>
+                @endforeach
               </select>
             </div>
 
@@ -51,10 +51,9 @@ $configData = Helper::appClasses();
                 <label class="form-label" for="type">Content Type <span class="text-danger">*</span></label>
                 <select class="form-select" id="type" name="type" required>
                   <option value="">Select Type</option>
-                  <option value="REEL">REEL</option>
-                  <option value="IGS">IGS (Instagram Story)</option>
-                  <option value="POST">POST</option>
-                  <option value="CAROUSEL">CAROUSEL</option>
+                  @foreach($contentTypes as $type)
+                    <option value="{{ $type->name }}">{{ $type->name }}</option>
+                  @endforeach
                 </select>
               </div>
               <div class="col-md-6">

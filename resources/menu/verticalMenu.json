@@ -85,6 +85,26 @@
       ]
     },
     {
+      "url": "/brands",
+      "name": "Master Brand",
+      "icon": "menu-icon tf-icons ti ti-tag",
+      "slug": "brands.index",
+      "roles": [
+        "superadmin",
+        "admin"
+      ]
+    },
+    {
+      "url": "/content_types",
+      "name": "Master Content Type",
+      "icon": "menu-icon tf-icons ti ti-file-description",
+      "slug": "content_types.index",
+      "roles": [
+        "superadmin",
+        "admin"
+      ]
+    },
+    {
       "url": "/users",
       "name": "User Management",
       "icon": "menu-icon tf-icons ti ti-users",

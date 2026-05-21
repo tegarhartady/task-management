@@ -93,19 +93,18 @@ $configData = Helper::appClasses();
           <label class="form-label">Brand</label>
           <select name="brand" class="form-select" onchange="this.form.submit()">
             <option value="All">All Brands</option>
-            <option value="SUPERNATA" {{ $filters['brand'] == 'SUPERNATA' ? 'selected' : '' }}>Supernata</option>
-            <option value="DEKORNATA" {{ $filters['brand'] == 'DEKORNATA' ? 'selected' : '' }}>Dekornata</option>
-            <option value="CRAFTNATA" {{ $filters['brand'] == 'CRAFTNATA' ? 'selected' : '' }}>Craftnata</option>
+            @foreach($brands as $brand)
+              <option value="{{ $brand->name }}" {{ $filters['brand'] == $brand->name ? 'selected' : '' }}>{{ $brand->name }}</option>
+            @endforeach
           </select>
         </div>
         <div class="col-md-3">
           <label class="form-label">Type</label>
           <select name="type" class="form-select" onchange="this.form.submit()">
             <option value="All">All Types</option>
-            <option value="REEL" {{ $filters['type'] == 'REEL' ? 'selected' : '' }}>REEL</option>
-            <option value="IGS" {{ $filters['type'] == 'IGS' ? 'selected' : '' }}>IGS</option>
-            <option value="POST" {{ $filters['type'] == 'POST' ? 'selected' : '' }}>POST</option>
-            <option value="CAROUSEL" {{ $filters['type'] == 'CAROUSEL' ? 'selected' : '' }}>CAROUSEL</option>
+            @foreach($contentTypes as $type)
+              <option value="{{ $type->name }}" {{ $filters['type'] == $type->name ? 'selected' : '' }}>{{ $type->name }}</option>
+            @endforeach
           </select>
         </div>
         <div class="col-md-3">

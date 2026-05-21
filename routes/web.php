@@ -136,6 +136,16 @@ Route::middleware('auth')->group(function () {
       );
   });
 
+  // Master Data Routes (Admin/Superadmin only)
+  Route::middleware('role:admin,superadmin')
+    ->group(function () {
+      // Brands
+      Route::resource('brands', App\Http\Controllers\BrandController::class)->except(['create', 'show', 'edit']);
+      
+      // Content Types
+      Route::resource('content_types', App\Http\Controllers\ContentTypeController::class)->except(['create', 'show', 'edit']);
+  });
+
   // Task Management Routes
   Route::prefix('tasks')
     ->name('tasks.')

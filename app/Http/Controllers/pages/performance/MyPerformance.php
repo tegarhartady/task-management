@@ -16,8 +16,8 @@ class MyPerformance extends Controller
     $dateFrom = $request->get('from');
     $dateTo = $request->get('to');
 
-    // If supervisor, show list of employees
-    if ($user->role === 'supervisor') {
+    // If supervisor, admin, or manager, show list of employees
+    if (in_array($user->role, ['supervisor', 'admin', 'manager', 'superadmin'])) {
       // Get employee performance data with pagination
       $employees = User::where('role', 'karyawan')
         ->where('is_active', true)
