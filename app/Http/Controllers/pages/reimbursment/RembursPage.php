@@ -5,8 +5,12 @@ namespace App\Http\Controllers\pages\reimbursment;
 use App\Http\Controllers\Controller;
 use App\Models\Reimbursement;
 use App\Models\ReimbursementAttachment;
+use App\Models\User;
+use App\Mail\ReimbursementSubmittedMail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Log;
 
 class RembursPage extends Controller
 {
@@ -42,7 +46,8 @@ class RembursPage extends Controller
 
   public function create()
   {
-    return view('content.pages.pages-reimburs-create');
+    $supervisors = User::where('role', 'supervisor')->get();
+    return view('content.pages.pages-reimburs-create', compact('supervisors'));
   }
 
   public function store(Request $request)
@@ -53,6 +58,7 @@ class RembursPage extends Controller
       'category' => 'required|string',
       'amount' => 'required|numeric|min:0',
       'date' => 'required|date',
+      'supervisor_id' => 'required|exists:users,id',
       'attachments.*' => 'nullable|file|mimes:pdf,jpg,jpeg,png,gif|max:5120', // 5MB per file
     ]);
 
@@ -84,6 +90,16 @@ class RembursPage extends Controller
       }
     }
 
+    // Send email notification to the assigned supervisor
+    $reimbursement->load(['submittedBy', 'supervisor']);
+    if ($reimbursement->supervisor) {
+      try {
+        Mail::to($reimbursement->supervisor->email)->send(new ReimbursementSubmittedMail($reimbursement));
+      } catch (\Exception $e) {
+        Log::error("Failed to send reimbursement email to {$reimbursement->supervisor->email}: " . $e->getMessage());
+      }
+    }
+
     return redirect()
       ->route('pages-reimburs')
       ->with('success', 'Reimbursement request created successfully!');
@@ -91,7 +107,7 @@ class RembursPage extends Controller
 
   public function detail($id)
   {
-    $reimbursement = Reimbursement::with('submittedBy', 'approvedBy', 'attachments')->findOrFail($id);
+    $reimbursement = Reimbursement::with('submittedBy', 'approvedBy', 'attachments', 'supervisor')->findOrFail($id);
 
     return view('content.pages.pages-reimburs-detail', ['reimburs' => $reimbursement]);
   }

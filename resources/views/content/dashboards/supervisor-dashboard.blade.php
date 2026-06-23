@@ -232,7 +232,7 @@ $allReimburse = collect($reimbursements);
             <span class="badge bg-white text-danger">{{ $overdueTasks }}</span>
           </div>
         </div>
-        <div class="card-body p-4">
+        <div class="card-body p-4" style="max-height: 350px; overflow-y: auto;">
           @php
             $overdueTasks = $allTasks->filter(function($task) use ($today) {
               return $task->status !== 'Completed' && 

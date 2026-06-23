@@ -121,6 +121,14 @@ $isPending = $reimburs->status === 'Pending';
               </div>
             </div>
           </div>
+          <div class="col-md-6">
+            <div class="card border-0 bg-light">
+              <div class="card-body">
+                <small class="text-muted d-block mb-2 text-uppercase">Assigned Supervisor</small>
+                <strong>{{ $reimburs->supervisor->name ?? 'None' }}</strong>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 

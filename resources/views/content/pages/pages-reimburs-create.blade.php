@@ -63,6 +63,23 @@ $configData = Helper::appClasses();
               @enderror
             </div>
 
+            <!-- Supervisor -->
+            <div class="mb-3">
+              <label class="form-label">Supervisor <span class="text-danger">*</span></label>
+              <select class="form-select @error('supervisor_id') is-invalid @enderror" 
+                name="supervisor_id" required>
+                <option value="">Select Supervisor</option>
+                @foreach($supervisors as $supervisor)
+                  <option value="{{ $supervisor->id }}" {{ old('supervisor_id') == $supervisor->id ? 'selected' : '' }}>
+                    {{ $supervisor->name }} ({{ $supervisor->email }})
+                  </option>
+                @endforeach
+              </select>
+              @error('supervisor_id')
+                <div class="invalid-feedback">{{ $message }}</div>
+              @enderror
+            </div>
+
             <!-- Amount -->
             <div class="mb-3">
               <label class="form-label">Amount (Rp) <span class="text-danger">*</span></label>

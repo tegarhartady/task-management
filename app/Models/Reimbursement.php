@@ -20,6 +20,7 @@ class Reimbursement extends Model
     'approved_by',
     'rejection_reason',
     'approved_at',
+    'supervisor_id',
   ];
 
   protected $casts = [
@@ -37,6 +38,11 @@ class Reimbursement extends Model
   public function approvedBy()
   {
     return $this->belongsTo(User::class, 'approved_by');
+  }
+
+  public function supervisor()
+  {
+    return $this->belongsTo(User::class, 'supervisor_id');
   }
 
   public function attachments()
