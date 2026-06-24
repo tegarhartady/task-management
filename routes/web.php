@@ -113,6 +113,10 @@ Route::middleware('auth')->group(function () {
     App\Http\Controllers\pages\reimbursment\RembursPage::class,
     'reject',
   ])->name('reimburs.reject');
+  Route::post('/pages-reimburs/{id}/payment-proof', [
+    App\Http\Controllers\pages\reimbursment\RembursPage::class,
+    'uploadPaymentProof',
+  ])->name('reimburs.payment-proof');
   Route::get('/pages-performance', [App\Http\Controllers\pages\performance\MyPerformance::class, 'index'])->name(
     'pages-performance'
   );

@@ -49,4 +49,14 @@ class Reimbursement extends Model
   {
     return $this->hasMany(ReimbursementAttachment::class);
   }
+
+  public function expenseAttachments()
+  {
+    return $this->hasMany(ReimbursementAttachment::class)->where('is_payment_proof', false);
+  }
+
+  public function paymentProofs()
+  {
+    return $this->hasMany(ReimbursementAttachment::class)->where('is_payment_proof', true);
+  }
 }

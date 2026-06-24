@@ -160,4 +160,49 @@ class RembursPage extends Controller
 
     return back()->with('success', 'Reimbursement rejected successfully!');
   }
+
+  public function uploadPaymentProof(Request $request, $id)
+  {
+    $user = auth()->user();
+
+    if (!$user->isSupervisor() && !$user->isAdmin()) {
+      abort(403, 'Only supervisors can upload payment proof');
+    }
+
+    $reimbursement = Reimbursement::findOrFail($id);
+
+    if ($reimbursement->status !== 'Approved') {
+      return back()->with('error', 'Payment proof can only be uploaded for approved reimbursements');
+    }
+
+    $request->validate([
+      'payment_proof' => 'required|file|mimes:pdf,jpg,jpeg,png,gif|max:5120', // 5MB limit
+    ]);
+
+    if ($request->hasFile('payment_proof')) {
+      $file = $request->file('payment_proof');
+      $path = $file->store('reimbursement-attachments', 'public');
+      $fileType = $file->getClientMimeType();
+
+      if (str_contains($fileType, 'pdf')) {
+        $type = 'pdf';
+      } elseif (str_contains($fileType, 'image')) {
+        $type = 'image';
+      } else {
+        $type = 'document';
+      }
+
+      ReimbursementAttachment::create([
+        'reimbursement_id' => $reimbursement->id,
+        'file_path' => $path,
+        'original_name' => $file->getClientOriginalName(),
+        'file_type' => $type,
+        'is_payment_proof' => true,
+      ]);
+
+      return back()->with('success', 'Payment proof uploaded successfully!');
+    }
+
+    return back()->with('error', 'Failed to upload payment proof');
+  }
 }

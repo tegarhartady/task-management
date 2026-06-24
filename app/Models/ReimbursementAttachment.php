@@ -9,7 +9,11 @@ class ReimbursementAttachment extends Model
 {
   use HasFactory;
 
-  protected $fillable = ['reimbursement_id', 'file_path', 'original_name', 'file_type'];
+  protected $fillable = ['reimbursement_id', 'file_path', 'original_name', 'file_type', 'is_payment_proof'];
+
+  protected $casts = [
+    'is_payment_proof' => 'boolean',
+  ];
 
   public function reimbursement()
   {

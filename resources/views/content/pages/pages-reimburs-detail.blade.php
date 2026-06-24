@@ -143,11 +143,11 @@ $isPending = $reimburs->status === 'Pending';
       </div>
 
       <!-- Proof of Expense -->
-      @if($reimburs->attachments->count() > 0)
+      @if($reimburs->expenseAttachments->count() > 0)
         <div class="mb-4">
           <h6 class="mb-3">Proof of Expense</h6>
           <div class="row">
-            @foreach($reimburs->attachments as $attachment)
+            @foreach($reimburs->expenseAttachments as $attachment)
               <div class="col-md-3 mb-3">
                 <div class="card overflow-hidden h-100">
                   @if($attachment->file_type === 'image')
@@ -200,6 +200,64 @@ $isPending = $reimburs->status === 'Pending';
         </div>
       @endif
 
+      <!-- Proof of Payment (Supervisor) -->
+      @if($reimburs->paymentProofs->count() > 0)
+        <div class="mb-4">
+          <h6 class="mb-3 text-success fw-bold"><i class="ti ti-circle-check me-2"></i>Bukti Pembayaran (Supervisor)</h6>
+          <div class="row">
+            @foreach($reimburs->paymentProofs as $attachment)
+              <div class="col-md-3 mb-3">
+                <div class="card overflow-hidden h-100 border border-success border-opacity-25 shadow-sm">
+                  @if($attachment->file_type === 'image')
+                    <div style="height: 200px; background: #f5f5f5; display: flex; align-items: center; justify-content: center;">
+                      <img src="{{ Storage::url($attachment->file_path) }}" 
+                        class="img-fluid" 
+                        style="height: 100%; width: 100%; object-fit: cover; cursor: pointer;"
+                        data-bs-toggle="modal" 
+                        data-bs-target="#paymentModal{{ $attachment->id }}">
+                    </div>
+                  @elseif($attachment->file_type === 'pdf')
+                    <div style="height: 200px; background: #f5f5f5; display: flex; align-items: center; justify-content: center; flex-direction: column;">
+                      <i class="ti ti-file-pdf" style="font-size: 3rem; color: #dc3545;"></i>
+                      <small class="text-muted mt-2">PDF Document</small>
+                    </div>
+                  @else
+                    <div style="height: 200px; background: #f5f5f5; display: flex; align-items: center; justify-content: center; flex-direction: column;">
+                      <i class="ti ti-file" style="font-size: 3rem; color: #6c757d;"></i>
+                      <small class="text-muted mt-2">Document</small>
+                    </div>
+                  @endif
+                  <div class="card-body pt-2 pb-2 bg-success bg-opacity-5">
+                    <a href="{{ Storage::url($attachment->file_path) }}" target="_blank" 
+                      class="text-success text-decoration-none small d-block text-truncate fw-semibold" 
+                      title="{{ $attachment->original_name }}">
+                      {{ Str::limit($attachment->original_name, 25) }}
+                    </a>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Payment Image Modal -->
+              @if($attachment->file_type === 'image')
+                <div class="modal fade" id="paymentModal{{ $attachment->id }}" tabindex="-1">
+                  <div class="modal-dialog modal-lg modal-dialog-centered">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title">{{ $attachment->original_name }}</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                      </div>
+                      <div class="modal-body text-center">
+                        <img src="{{ Storage::url($attachment->file_path) }}" class="img-fluid" alt="{{ $attachment->original_name }}">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              @endif
+            @endforeach
+          </div>
+        </div>
+      @endif
+
       <!-- Rejection Reason -->
       @if($reimburs->status === 'Rejected' && !empty($reimburs->rejection_reason))
         <div class="mb-4">
@@ -211,6 +269,29 @@ $isPending = $reimburs->status === 'Pending';
       @endif
     </div>
   </div>
+
+  <!-- Upload Payment Proof (Supervisor Only) -->
+  @if($isSupervisor && $reimburs->status === 'Approved')
+    <div class="card mb-4 border border-primary border-opacity-25 shadow-sm">
+      <div class="card-header bg-label-primary py-3">
+        <h5 class="mb-0 text-primary fw-bold"><i class="ti ti-upload me-2"></i>Upload Bukti Pembayaran</h5>
+        <small class="text-muted">Supervisor can upload transfer proof or payment confirmation here.</small>
+      </div>
+      <div class="card-body pt-4">
+        <form action="{{ route('reimburs.payment-proof', $reimburs->id) }}" method="POST" enctype="multipart/form-data">
+          @csrf
+          <div class="mb-3">
+            <label class="form-label fw-semibold">Pilih File Bukti Pembayaran <span class="text-danger">*</span></label>
+            <input type="file" name="payment_proof" class="form-control" accept=".pdf,.jpg,.jpeg,.png,.gif" required>
+            <small class="text-muted d-block mt-1">Supported formats: JPG, PNG, GIF, PDF (Max 5MB)</small>
+          </div>
+          <button type="submit" class="btn btn-primary">
+            <i class="ti ti-send me-2"></i>Kirim Bukti Pembayaran
+          </button>
+        </form>
+      </div>
+    </div>
+  @endif
 
   <!-- Action Buttons (Supervisor) -->
   @if($isSupervisor && $isPending)
