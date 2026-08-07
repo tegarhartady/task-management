@@ -27,6 +27,12 @@ class DashboardController extends Controller
         ->whereNotNull('due_date')
         ->where('due_date', '<', now()->toDateString())
         ->count(),
+      'totalReimburse' => \App\Models\Reimbursement::sum('amount'),
+      'approvedReimburse' => \App\Models\Reimbursement::where('status', 'Approved')->sum('amount'),
+      'pendingReimburse' => \App\Models\Reimbursement::where('status', 'Pending')->sum('amount'),
+      'rejectedReimburse' => \App\Models\Reimbursement::where('status', 'Rejected')->sum('amount'),
+      'users' => \App\Models\User::latest()->get(),
+      'recentTasks' => \App\Models\Task::latest()->take(5)->get(),
     ];
     return view('content.dashboards.admin-dashboard', $data);
   }

@@ -1,40 +1,5 @@
 @php
 $configData = Helper::appClasses();
-
-// Load all data
-$tasksJson = file_get_contents(resource_path('data/tasks.json'));
-$tasksData = json_decode($tasksJson, true);
-$briefsJson = file_get_contents(resource_path('data/briefs.json'));
-$briefsData = json_decode($briefsJson, true);
-$reimbursJson = file_get_contents(resource_path('data/reimburs.json'));
-$reimbursData = json_decode($reimbursJson, true);
-
-// Calculate statistics
-$allTasks = collect($tasksData['tasks']);
-$allBriefs = collect($briefsData)->flatMap(function($v) { return $v['items']; });
-$allReimburse = collect($reimbursData)->flatMap(function($v) { return $v['items']; });
-
-// Admin statistics
-$totalUsers = \App\Models\User::count();
-$adminCount = \App\Models\User::where('role', 'admin')->count();
-$financeCount = \App\Models\User::where('role', 'finance')->count();
-$creativeCount = \App\Models\User::where('role', 'creative_director')->count();
-$timInternalCount = \App\Models\User::where('role', 'tim_internal')->count();
-$sosmedCount = \App\Models\User::where('role', 'sosmed_spesialis')->count();
-$activeUsers = \App\Models\User::where('is_active', true)->count();
-
-$totalTasks = $allTasks->count();
-$overdueTasks = $allTasks->where('status', '!=', 'Completed')
-    ->where('due_date', '<', date('Y-m-d'))
-    ->count();
-
-$totalReimburse = $allReimburse->sum('amount');
-$approvedReimburse = $allReimburse->where('status', 'Approved')->sum('amount');
-$pendingReimburse = $allReimburse->where('status', 'Pending')->sum('amount');
-$rejectedReimburse = $allReimburse->where('status', 'Rejected')->sum('amount');
-
-// Get all users
-$users = \App\Models\User::all();
 @endphp
 
 @extends('layouts/layoutMaster')
@@ -139,31 +104,31 @@ $users = \App\Models\User::all();
         <div class="row text-center">
           <div class="col-6 col-md-3 mb-3">
             <div class="p-3" style="background: rgba(102, 126, 234, 0.1); border-radius: 8px;">
-              <h5 class="mb-1" style="color: #667eea;">{{ $adminCount }}</h5>
+              <h5 class="mb-1" style="color: #667eea;">{{ $totalAdmins }}</h5>
               <small class="text-muted">Admin</small>
             </div>
           </div>
           <div class="col-6 col-md-4 mb-3">
             <div class="p-3" style="background: rgba(40, 167, 69, 0.1); border-radius: 8px;">
-              <h5 class="mb-1" style="color: #28a745;">{{ $financeCount }}</h5>
+              <h5 class="mb-1" style="color: #28a745;">{{ $totalFinance }}</h5>
               <small class="text-muted">Finance</small>
             </div>
           </div>
           <div class="col-6 col-md-4 mb-3">
             <div class="p-3" style="background: rgba(102, 126, 234, 0.1); border-radius: 8px;">
-              <h5 class="mb-1" style="color: #667eea;">{{ $creativeCount }}</h5>
+              <h5 class="mb-1" style="color: #667eea;">{{ $totalCreative }}</h5>
               <small class="text-muted">Creative Dir.</small>
             </div>
           </div>
           <div class="col-6 col-md-4 mb-3">
             <div class="p-3" style="background: rgba(13, 202, 240, 0.1); border-radius: 8px;">
-              <h5 class="mb-1" style="color: #0dcaf0;">{{ $timInternalCount }}</h5>
+              <h5 class="mb-1" style="color: #0dcaf0;">{{ $totalTimInternal }}</h5>
               <small class="text-muted">Tim Internal</small>
             </div>
           </div>
           <div class="col-6 col-md-4 mb-3">
             <div class="p-3" style="background: rgba(255, 193, 7, 0.1); border-radius: 8px;">
-              <h5 class="mb-1" style="color: #ffc107;">{{ $sosmedCount }}</h5>
+              <h5 class="mb-1" style="color: #ffc107;">{{ $totalSosmed }}</h5>
               <small class="text-muted">Sosmed Spec.</small>
             </div>
           </div>
@@ -220,30 +185,30 @@ $users = \App\Models\User::all();
               </tr>
             </thead>
             <tbody>
-              @forelse($allTasks->take(5) as $task)
+              @forelse($recentTasks as $task)
                 <tr>
                   <td>
-                    <h6 class="mb-0">{{ $task['title'] }}</h6>
+                    <h6 class="mb-0">{{ $task->title }}</h6>
                   </td>
                   <td>
-                    @if($task['priority'] === 'High')
-                      <span class="badge bg-danger">{{ $task['priority'] }}</span>
-                    @elseif($task['priority'] === 'Medium')
-                      <span class="badge bg-warning">{{ $task['priority'] }}</span>
+                    @if($task->priority === 'High')
+                      <span class="badge bg-danger">{{ $task->priority }}</span>
+                    @elseif($task->priority === 'Medium')
+                      <span class="badge bg-warning">{{ $task->priority }}</span>
                     @else
-                      <span class="badge bg-info">{{ $task['priority'] }}</span>
+                      <span class="badge bg-info">{{ $task->priority }}</span>
                     @endif
                   </td>
                   <td>
-                    @if($task['status'] === 'Completed')
-                      <span class="badge bg-success">{{ $task['status'] }}</span>
-                    @elseif($task['status'] === 'In Progress')
-                      <span class="badge bg-warning">{{ $task['status'] }}</span>
+                    @if($task->status === 'Completed')
+                      <span class="badge bg-success">{{ $task->status }}</span>
+                    @elseif($task->status === 'In Progress')
+                      <span class="badge bg-warning">{{ $task->status }}</span>
                     @else
-                      <span class="badge bg-secondary">{{ $task['status'] }}</span>
+                      <span class="badge bg-secondary">{{ $task->status }}</span>
                     @endif
                   </td>
-                  <td><small class="text-muted">{{ $task['deadline'] ?? 'N/A' }}</small></td>
+                  <td><small class="text-muted">{{ $task->due_date ? \Carbon\Carbon::parse($task->due_date)->format('d M Y') : 'N/A' }}</small></td>
                 </tr>
               @empty
                 <tr>

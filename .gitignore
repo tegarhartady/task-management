@@ -37,3 +37,4 @@ package-lock.log
 
 # Package Lock files
 /package-lock.json
+.env
