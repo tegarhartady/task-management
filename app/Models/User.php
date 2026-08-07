@@ -69,32 +69,44 @@ class User extends Authenticatable
   }
 
   /**
-   * Check if user is supervisor
+   * Check if user is finance
    */
-  public function isSupervisor()
+  public function isFinance()
   {
-    return $this->role === 'supervisor';
+    return $this->role === 'finance';
   }
 
   /**
-   * Check if user is manager
+   * Check if user is creative director
    */
-  public function isManager()
+  public function isCreativeDirector()
   {
-    return $this->role === 'manager';
+    return $this->role === 'creative_director';
   }
 
   /**
-   * Check if user is karyawan
+   * Check if user is tim internal
    */
-  public function isKaryawan()
+  public function isTimInternal()
   {
-    return $this->role === 'karyawan';
+    return $this->role === 'tim_internal';
   }
 
+  /**
+   * Check if user is sosmed spesialis
+   */
+  public function isSosmedSpesialis()
+  {
+    return $this->role === 'sosmed_spesialis';
+  }
   /**
    * Relationships
    */
+  public function roleModel()
+  {
+    return $this->belongsTo(Role::class, 'role', 'slug');
+  }
+
   public function tasks()
   {
     return $this->hasMany(Task::class, 'assigned_to');

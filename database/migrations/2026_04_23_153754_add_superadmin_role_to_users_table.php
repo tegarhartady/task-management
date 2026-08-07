@@ -11,12 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table
-                ->enum('role', ['superadmin', 'admin', 'supervisor', 'manager', 'karyawan'])
-                ->default('karyawan')
-                ->change();
-        });
+        if (\Illuminate\Support\Facades\DB::getDriverName() === 'sqlite') {
+            return;
+        }
+
+        \Illuminate\Support\Facades\DB::statement("ALTER TABLE users MODIFY COLUMN role ENUM('superadmin', 'admin', 'supervisor', 'manager', 'karyawan') NOT NULL DEFAULT 'karyawan'");
     }
 
     /**
@@ -24,11 +23,10 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table
-                ->enum('role', ['admin', 'supervisor', 'manager', 'karyawan'])
-                ->default('karyawan')
-                ->change();
-        });
+        if (\Illuminate\Support\Facades\DB::getDriverName() === 'sqlite') {
+            return;
+        }
+
+        \Illuminate\Support\Facades\DB::statement("ALTER TABLE users MODIFY COLUMN role ENUM('admin', 'supervisor', 'manager', 'karyawan') NOT NULL DEFAULT 'karyawan'");
     }
 };

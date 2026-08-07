@@ -13,8 +13,8 @@ class HomePage extends Controller
     $user = auth()->user();
     $query = Brief::with('creator', 'assignedTo', 'attachments');
 
-    // Filter by assigned user if role is karyawan
-    if ($user && $user->role === 'karyawan') {
+    // Filter by assigned user if role is tim_internal or sosmed_spesialis
+    if ($user && in_array($user->role, ['tim_internal', 'sosmed_spesialis'])) {
       $query->whereHas('assignees', function ($q) use ($user) {
         $q->where('user_id', $user->id);
       });

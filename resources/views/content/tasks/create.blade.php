@@ -82,7 +82,9 @@ $currentUser = auth()->user();
                   </option>
                 @endforeach
               </select>
-              @if($currentUser->isKaryawan())
+              @if($currentUser->isTimInternal() || $currentUser->isSosmedSpesialis())
+                <input type="hidden" name="assigned_to" value="{{ $currentUser->id }}">
+              @else
                 <small class="text-muted d-block mt-1">If not assigned, will be assigned to you automatically</small>
               @endif
               @error('assigned_to')

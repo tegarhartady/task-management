@@ -17,9 +17,10 @@ $allReimburse = collect($reimbursData)->flatMap(function($v) { return $v['items'
 // Admin statistics
 $totalUsers = \App\Models\User::count();
 $adminCount = \App\Models\User::where('role', 'admin')->count();
-$supervisorCount = \App\Models\User::where('role', 'supervisor')->count();
-$managerCount = \App\Models\User::where('role', 'manager')->count();
-$karyawanCount = \App\Models\User::where('role', 'karyawan')->count();
+$financeCount = \App\Models\User::where('role', 'finance')->count();
+$creativeCount = \App\Models\User::where('role', 'creative_director')->count();
+$timInternalCount = \App\Models\User::where('role', 'tim_internal')->count();
+$sosmedCount = \App\Models\User::where('role', 'sosmed_spesialis')->count();
 $activeUsers = \App\Models\User::where('is_active', true)->count();
 
 $totalTasks = $allTasks->count();
@@ -142,22 +143,28 @@ $users = \App\Models\User::all();
               <small class="text-muted">Admin</small>
             </div>
           </div>
-          <div class="col-6 col-md-3 mb-3">
-            <div class="p-3" style="background: rgba(255, 193, 7, 0.1); border-radius: 8px;">
-              <h5 class="mb-1" style="color: #ffc107;">{{ $supervisorCount }}</h5>
-              <small class="text-muted">Supervisor</small>
-            </div>
-          </div>
-          <div class="col-6 col-md-3 mb-3">
+          <div class="col-6 col-md-4 mb-3">
             <div class="p-3" style="background: rgba(40, 167, 69, 0.1); border-radius: 8px;">
-              <h5 class="mb-1" style="color: #28a745;">{{ $managerCount }}</h5>
-              <small class="text-muted">Manager</small>
+              <h5 class="mb-1" style="color: #28a745;">{{ $financeCount }}</h5>
+              <small class="text-muted">Finance</small>
             </div>
           </div>
-          <div class="col-6 col-md-3 mb-3">
+          <div class="col-6 col-md-4 mb-3">
+            <div class="p-3" style="background: rgba(102, 126, 234, 0.1); border-radius: 8px;">
+              <h5 class="mb-1" style="color: #667eea;">{{ $creativeCount }}</h5>
+              <small class="text-muted">Creative Dir.</small>
+            </div>
+          </div>
+          <div class="col-6 col-md-4 mb-3">
             <div class="p-3" style="background: rgba(13, 202, 240, 0.1); border-radius: 8px;">
-              <h5 class="mb-1" style="color: #0dcaf0;">{{ $karyawanCount }}</h5>
-              <small class="text-muted">Karyawan</small>
+              <h5 class="mb-1" style="color: #0dcaf0;">{{ $timInternalCount }}</h5>
+              <small class="text-muted">Tim Internal</small>
+            </div>
+          </div>
+          <div class="col-6 col-md-4 mb-3">
+            <div class="p-3" style="background: rgba(255, 193, 7, 0.1); border-radius: 8px;">
+              <h5 class="mb-1" style="color: #ffc107;">{{ $sosmedCount }}</h5>
+              <small class="text-muted">Sosmed Spec.</small>
             </div>
           </div>
         </div>
@@ -353,11 +360,14 @@ $users = \App\Models\User::all();
                 </td>
                 <td>
                   <span class="badge 
-                    @if($user->role == 'admin') bg-danger
-                    @elseif($user->role == 'supervisor') bg-warning
-                    @elseif($user->role == 'manager') bg-primary
+                    @if($user->role == 'superadmin') bg-dark
+                    @elseif($user->role == 'admin') bg-danger
+                    @elseif($user->role == 'finance') bg-success
+                    @elseif($user->role == 'creative_director') bg-primary
+                    @elseif($user->role == 'tim_internal') bg-info
+                    @elseif($user->role == 'sosmed_spesialis') bg-warning
                     @else bg-secondary @endif
-                  ">{{ ucfirst($user->role) }}</span>
+                  ">{{ ucwords(str_replace('_', ' ', $user->role)) }}</span>
                 </td>
                 <td>
                   <span class="badge {{ $user->is_active ? 'bg-success' : 'bg-secondary' }}">

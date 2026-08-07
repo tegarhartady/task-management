@@ -93,17 +93,17 @@ $configData = Helper::appClasses();
 
             <!-- Assign To (Multiple) -->
             <div class="mb-4">
-              <label class="form-label" for="assignees">Assign to Employees (Karyawan)</label>
+              <label class="form-label" for="assignees">Assign to Employees</label>
               <div class="d-flex mb-2">
-                <button type="button" class="btn btn-sm btn-outline-primary me-2" id="selectAllKaryawan">
+                <button type="button" class="btn btn-sm btn-outline-primary me-2" id="selectAllAssignees">
                   <i class="ti ti-users me-1"></i>Select All
                 </button>
-                <button type="button" class="btn btn-sm btn-outline-secondary" id="deselectAllKaryawan">
+                <button type="button" class="btn btn-sm btn-outline-secondary" id="deselectAllAssignees">
                   <i class="ti ti-user-x me-1"></i>Deselect All
                 </button>
               </div>
               <select class="form-select" id="assignees" name="assignees[]" multiple style="height: 150px;">
-                @foreach($karyawan as $user)
+                @foreach($assignees as $user)
                   <option value="{{ $user->id }}">{{ $user->name }} ({{ $user->email }})</option>
                 @endforeach
               </select>
@@ -205,9 +205,9 @@ $configData = Helper::appClasses();
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-  // Select All Karyawan logic
-  const selectAllBtn = document.getElementById('selectAllKaryawan');
-  const deselectAllBtn = document.getElementById('deselectAllKaryawan');
+  // Select All Assignees logic
+  const selectAllBtn = document.getElementById('selectAllAssignees');
+  const deselectAllBtn = document.getElementById('deselectAllAssignees');
   const assigneesSelect = document.getElementById('assignees');
 
   if (selectAllBtn) {

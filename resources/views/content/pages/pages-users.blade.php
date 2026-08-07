@@ -4,9 +4,10 @@ $configData = Helper::appClasses();
 $roleColors = [
   'superadmin' => '#7367f0',
   'admin' => '#696cff',
-  'supervisor' => '#ff9f43',
-  'manager' => '#28c76f',
-  'karyawan' => '#ea5455',
+  'finance' => '#28c76f',
+  'creative_director' => '#0dcaf0',
+  'tim_internal' => '#ff9f43',
+  'sosmed_spesialis' => '#ea5455',
 ];
 
 // Stats
@@ -14,9 +15,10 @@ $allUsers = \App\Models\User::all();
 $countAll = $allUsers->count();
 $countSuperadmin = $allUsers->where('role', 'superadmin')->count();
 $countAdmin = $allUsers->where('role', 'admin')->count();
-$countSupervisor = $allUsers->where('role', 'supervisor')->count();
-$countManager = $allUsers->where('role', 'manager')->count();
-$countKaryawan = $allUsers->where('role', 'karyawan')->count();
+$countFinance = $allUsers->where('role', 'finance')->count();
+$countCreative = $allUsers->where('role', 'creative_director')->count();
+$countTimInternal = $allUsers->where('role', 'tim_internal')->count();
+$countSosmed = $allUsers->where('role', 'sosmed_spesialis')->count();
 @endphp
 
 @extends('layouts/layoutMaster')
@@ -85,27 +87,35 @@ $countKaryawan = $allUsers->where('role', 'karyawan')->count();
       </div>
     </div>
   </div>
-  <div class="col-6 col-md mb-2">
+  <div class="col-4 col-md mb-2">
     <div class="card text-center h-100 shadow-sm">
       <div class="card-body py-3">
-        <h3 class="mb-0" style="color: {{ $roleColors['supervisor'] }}">{{ $countSupervisor }}</h3>
-        <small class="text-muted">Supervisor</small>
+        <h3 class="mb-0" style="color: {{ $roleColors['finance'] }}">{{ $countFinance }}</h3>
+        <small class="text-muted">Finance</small>
       </div>
     </div>
   </div>
-  <div class="col-6 col-md mb-2">
+  <div class="col-4 col-md mb-2">
     <div class="card text-center h-100 shadow-sm">
       <div class="card-body py-3">
-        <h3 class="mb-0" style="color: {{ $roleColors['manager'] }}">{{ $countManager }}</h3>
-        <small class="text-muted">Manager</small>
+        <h3 class="mb-0" style="color: {{ $roleColors['creative_director'] }}">{{ $countCreative }}</h3>
+        <small class="text-muted">Creative Dir.</small>
       </div>
     </div>
   </div>
-  <div class="col-6 col-md mb-2">
+  <div class="col-4 col-md mb-2">
     <div class="card text-center h-100 shadow-sm">
       <div class="card-body py-3">
-        <h3 class="mb-0" style="color: {{ $roleColors['karyawan'] }}">{{ $countKaryawan }}</h3>
-        <small class="text-muted">Karyawan</small>
+        <h3 class="mb-0" style="color: {{ $roleColors['tim_internal'] }}">{{ $countTimInternal }}</h3>
+        <small class="text-muted">Tim Internal</small>
+      </div>
+    </div>
+  </div>
+  <div class="col-4 col-md mb-2">
+    <div class="card text-center h-100 shadow-sm">
+      <div class="card-body py-3">
+        <h3 class="mb-0" style="color: {{ $roleColors['sosmed_spesialis'] }}">{{ $countSosmed }}</h3>
+        <small class="text-muted">Sosmed Spec.</small>
       </div>
     </div>
   </div>
@@ -119,9 +129,10 @@ $countKaryawan = $allUsers->where('role', 'karyawan')->count();
         <option value="">All Roles</option>
         <option value="superadmin" {{ request('role') == 'superadmin' ? 'selected' : '' }}>Superadmin</option>
         <option value="admin" {{ request('role') == 'admin' ? 'selected' : '' }}>Admin</option>
-        <option value="supervisor" {{ request('role') == 'supervisor' ? 'selected' : '' }}>Supervisor</option>
-        <option value="manager" {{ request('role') == 'manager' ? 'selected' : '' }}>Manager</option>
-        <option value="karyawan" {{ request('role') == 'karyawan' ? 'selected' : '' }}>Karyawan</option>
+        <option value="finance" {{ request('role') == 'finance' ? 'selected' : '' }}>Finance</option>
+        <option value="creative_director" {{ request('role') == 'creative_director' ? 'selected' : '' }}>Creative Director</option>
+        <option value="tim_internal" {{ request('role') == 'tim_internal' ? 'selected' : '' }}>Tim Internal</option>
+        <option value="sosmed_spesialis" {{ request('role') == 'sosmed_spesialis' ? 'selected' : '' }}>Sosmed Spesialis</option>
       </select>
       <div class="flex-grow-1">
         <input type="text" class="form-control" name="search" value="{{ request('search') }}" placeholder="Search users by name or email..." onkeydown="if(event.key==='Enter'){this.form.submit();}">
@@ -144,7 +155,7 @@ $countKaryawan = $allUsers->where('role', 'karyawan')->count();
       <div class="card mb-3 shadow-sm" style="border-left: 4px solid {{ $borderColor }}; transition: transform 0.2s;">
         <div class="card-body d-flex justify-content-between align-items-center">
           <div class="d-flex align-items-center" style="max-width: 70%;">
-            <div class="avatar avatar-md me-3 bg-label-{{ $user->role === 'superadmin' ? 'primary' : ($user->role === 'admin' ? 'info' : ($user->role === 'supervisor' ? 'warning' : ($user->role === 'manager' ? 'success' : 'danger'))) }} p-2" style="border-radius: 50%; width: 45px; height: 45px; display: flex; align-items: center; justify-content: center; font-weight: bold;">
+            <div class="avatar avatar-md me-3 bg-label-{{ $user->role === 'superadmin' ? 'dark' : ($user->role === 'admin' ? 'danger' : ($user->role === 'finance' ? 'success' : ($user->role === 'creative_director' ? 'primary' : ($user->role === 'tim_internal' ? 'info' : 'warning')))) }} p-2" style="border-radius: 50%; width: 45px; height: 45px; display: flex; align-items: center; justify-content: center; font-weight: bold;">
               {{ strtoupper(substr($user->name, 0, 1)) }}
             </div>
             <div>
@@ -152,7 +163,7 @@ $countKaryawan = $allUsers->where('role', 'karyawan')->count();
               <p class="text-muted mb-2 small">{{ $user->email }}</p>
               <div class="d-flex flex-wrap gap-1">
                 <span class="badge" style="background-color: {{ $borderColor }}">
-                  {{ ucfirst($user->role) }}
+                  {{ ucwords(str_replace('_', ' ', $user->role)) }}
                 </span>
                 @if($user->is_active)
                   <span class="badge bg-label-success">Active</span>
@@ -226,9 +237,10 @@ $countKaryawan = $allUsers->where('role', 'karyawan')->count();
             <select name="role" class="form-select" required>
               <option value="superadmin">Superadmin</option>
               <option value="admin">Admin</option>
-              <option value="supervisor">Supervisor</option>
-              <option value="manager">Manager</option>
-              <option value="karyawan" selected>Karyawan</option>
+              <option value="finance">Finance</option>
+              <option value="creative_director">Creative Director</option>
+              <option value="tim_internal" selected>Tim Internal</option>
+              <option value="sosmed_spesialis">Sosmed Spesialis</option>
             </select>
           </div>
           <div class="mb-3">
@@ -274,9 +286,10 @@ $countKaryawan = $allUsers->where('role', 'karyawan')->count();
             <select name="role" id="edit_role" class="form-select" required>
               <option value="superadmin">Superadmin</option>
               <option value="admin">Admin</option>
-              <option value="supervisor">Supervisor</option>
-              <option value="manager">Manager</option>
-              <option value="karyawan">Karyawan</option>
+              <option value="finance">Finance</option>
+              <option value="creative_director">Creative Director</option>
+              <option value="tim_internal">Tim Internal</option>
+              <option value="sosmed_spesialis">Sosmed Spesialis</option>
             </select>
           </div>
           <div class="mb-3">

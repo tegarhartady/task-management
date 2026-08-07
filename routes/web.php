@@ -44,36 +44,20 @@ Route::middleware('auth')->group(function () {
     $user = auth()->user();
 
     return match ($user->role) {
+      'superadmin' => redirect()->route('admin.dashboard'),
       'admin' => redirect()->route('admin.dashboard'),
-      'supervisor' => redirect()->route('supervisor.dashboard'),
-      'manager' => redirect()->route('manager.dashboard'),
+      'creative_director' => redirect()->route('admin.dashboard'),
       default => redirect()->route('pages-home'),
     };
   })->name('dashboard');
 
-  // Admin Dashboard - ADMIN ONLY
+  // Admin Dashboard - ADMIN & CREATIVE DIRECTOR
   Route::get('/admin-dashboard', [
     \App\Http\Controllers\Dashboard\DashboardController::class,
     'adminDashboard',
   ])
-    ->middleware('role:admin')
+    ->middleware('role:superadmin,admin,creative_director')
     ->name('admin.dashboard');
-
-  // Supervisor Dashboard - SUPERVISOR ONLY (admin can't access)
-  Route::get('/supervisor-dashboard', [
-    \App\Http\Controllers\Dashboard\DashboardController::class,
-    'supervisorDashboard',
-  ])
-    ->middleware('role:supervisor')
-    ->name('supervisor.dashboard');
-
-  // Manager Dashboard - MANAGER ONLY
-  Route::get('/manager-dashboard', [
-    \App\Http\Controllers\Dashboard\DashboardController::class,
-    'managerDashboard',
-  ])
-    ->middleware('role:manager')
-    ->name('manager.dashboard');
 
   // Main Page Route
   Route::get('/', [HomePage::class, 'index'])->name('pages-home');
@@ -124,8 +108,8 @@ Route::middleware('auth')->group(function () {
     'pages-performance.show'
   );
 
-  // User Management Routes (Admin only)
-  Route::middleware('role:admin,superadmin')
+  // User Management Routes (Admin & Creative Director only)
+  Route::middleware('role:admin,superadmin,creative_director')
     ->prefix('users')
     ->name('users.')
     ->group(function () {
@@ -139,9 +123,22 @@ Route::middleware('auth')->group(function () {
         'toggle-status'
       );
   });
+  
+  // Role Management Routes (Admin & Creative Director only)
+  Route::middleware('role:admin,superadmin,creative_director')
+    ->prefix('roles')
+    ->name('roles.')
+    ->group(function () {
+      Route::get('/', [App\Http\Controllers\RoleController::class, 'index'])->name('index');
+      Route::get('/create', [App\Http\Controllers\RoleController::class, 'create'])->name('create');
+      Route::post('/', [App\Http\Controllers\RoleController::class, 'store'])->name('store');
+      Route::get('/{role}/edit', [App\Http\Controllers\RoleController::class, 'edit'])->name('edit');
+      Route::put('/{role}', [App\Http\Controllers\RoleController::class, 'update'])->name('update');
+      Route::delete('/{role}', [App\Http\Controllers\RoleController::class, 'destroy'])->name('destroy');
+  });
 
-  // Master Data Routes (Admin/Superadmin only)
-  Route::middleware('role:admin,superadmin')
+  // Master Data Routes (Admin/Superadmin & Creative Director only)
+  Route::middleware('role:admin,superadmin,creative_director')
     ->group(function () {
       // Brands
       Route::resource('brands', App\Http\Controllers\BrandController::class)->except(['create', 'show', 'edit']);

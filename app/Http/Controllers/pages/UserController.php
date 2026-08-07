@@ -37,7 +37,8 @@ class UserController extends Controller
    */
   public function create()
   {
-    return view('content.pages.pages-users-create');
+    $roles = \App\Models\Role::all();
+    return view('content.pages.pages-users-create', compact('roles'));
   }
 
   /**
@@ -49,7 +50,7 @@ class UserController extends Controller
       'name' => 'required|string|max:255',
       'email' => 'required|email|unique:users',
       'password' => 'required|string|min:8|confirmed',
-      'role' => 'required|in:admin,supervisor,manager,karyawan',
+      'role' => 'required|string|exists:roles,slug',
       'is_active' => 'boolean',
     ]);
 
@@ -68,7 +69,8 @@ class UserController extends Controller
    */
   public function edit(User $user)
   {
-    return view('content.pages.pages-users-edit', compact('user'));
+    $roles = \App\Models\Role::all();
+    return view('content.pages.pages-users-edit', compact('user', 'roles'));
   }
 
   /**
@@ -79,7 +81,7 @@ class UserController extends Controller
     $validated = $request->validate([
       'name' => 'required|string|max:255',
       'email' => 'required|email|unique:users,email,' . $user->id,
-      'role' => 'required|in:admin,supervisor,manager,karyawan',
+      'role' => 'required|string|exists:roles,slug',
       'is_active' => 'boolean',
     ]);
 

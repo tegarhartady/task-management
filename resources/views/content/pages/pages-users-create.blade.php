@@ -104,10 +104,9 @@ $configData = Helper::appClasses();
                 required
               >
                 <option value="">Select a role</option>
-                <option value="admin" @if(old('role') === 'admin') selected @endif>Admin</option>
-                <option value="supervisor" @if(old('role') === 'supervisor') selected @endif>Supervisor</option>
-                <option value="manager" @if(old('role') === 'manager') selected @endif>Manager</option>
-                <option value="karyawan" @if(old('role') === 'karyawan') selected @endif>Karyawan</option>
+                @foreach($roles as $r)
+                  <option value="{{ $r->slug }}" @if(old('role') === $r->slug) selected @endif>{{ $r->name }}</option>
+                @endforeach
               </select>
               @error('role')
                 <div class="invalid-feedback">{{ $message }}</div>

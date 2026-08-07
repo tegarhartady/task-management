@@ -16,10 +16,10 @@ class MyPerformance extends Controller
     $dateFrom = $request->get('from');
     $dateTo = $request->get('to');
 
-    // If supervisor, admin, or manager, show list of employees
-    if (in_array($user->role, ['supervisor', 'admin', 'manager', 'superadmin'])) {
+    // If creative_director, admin, or superadmin, show list of employees
+    if (in_array($user->role, ['creative_director', 'admin', 'superadmin'])) {
       // Get employee performance data with pagination
-      $employees = User::where('role', 'karyawan')
+      $employees = User::whereIn('role', ['tim_internal', 'sosmed_spesialis'])
         ->where('is_active', true)
         ->paginate(5);
 
@@ -44,7 +44,7 @@ class MyPerformance extends Controller
       ]);
     }
 
-    // If karyawan, show own performance detail
+    // If tim_internal or sosmed_spesialis, show own performance detail
     $performance = $this->calculateUserPerformance($user, $timeRange, $dateFrom, $dateTo);
 
     return view('content.pages.pages-performance', [
@@ -60,8 +60,8 @@ class MyPerformance extends Controller
   {
     $user = auth()->user();
 
-    // Only supervisor and admin/manager can view employee performance
-    if (!in_array($user->role, ['supervisor', 'admin', 'manager'])) {
+    // Only creative_director and admin/superadmin can view employee performance
+    if (!in_array($user->role, ['superadmin', 'admin', 'creative_director'])) {
       abort(403, 'Unauthorized');
     }
 

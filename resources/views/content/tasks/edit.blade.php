@@ -52,8 +52,8 @@ $users = App\Models\User::where('is_active', true)->get();
               @enderror
             </div>
 
-            <!-- Assign To (Hanya untuk Admin/Supervisor/Manager) -->
-            @if(!auth()->user()->isKaryawan())
+            <!-- Assign To (Hanya untuk Admin/Creative Director) -->
+            @if(auth()->user()->isAdmin() || auth()->user()->isCreativeDirector())
               <div class="col-md-6">
                 <label class="form-label">Assign To</label>
                 <select class="form-select @error('assigned_to') is-invalid @enderror" name="assigned_to">

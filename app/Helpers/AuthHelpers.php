@@ -34,48 +34,63 @@ if (!function_exists('isAdmin')) {
   }
 }
 
-if (!function_exists('isSupervisor')) {
+if (!function_exists('isFinance')) {
   /**
-   * Check if current user is supervisor
+   * Check if current user is finance
    *
    * @return bool
    */
-  function isSupervisor()
+  function isFinance()
   {
     return auth()->check() &&
       auth()
         ->user()
-        ->isSupervisor();
+        ->isFinance();
   }
 }
 
-if (!function_exists('isManager')) {
+if (!function_exists('isCreativeDirector')) {
   /**
-   * Check if current user is manager
+   * Check if current user is creative director
    *
    * @return bool
    */
-  function isManager()
+  function isCreativeDirector()
   {
     return auth()->check() &&
       auth()
         ->user()
-        ->isManager();
+        ->isCreativeDirector();
   }
 }
 
-if (!function_exists('isKaryawan')) {
+if (!function_exists('isTimInternal')) {
   /**
-   * Check if current user is karyawan
+   * Check if current user is tim internal
    *
    * @return bool
    */
-  function isKaryawan()
+  function isTimInternal()
   {
     return auth()->check() &&
       auth()
         ->user()
-        ->isKaryawan();
+        ->isTimInternal();
+  }
+}
+
+if (!function_exists('isSosmedSpesialis')) {
+  /**
+   * Check if current user is sosmed spesialis
+   *
+   * @return bool
+   */
+  function isSosmedSpesialis()
+  {
+    return auth()->check() &&
+      auth()
+        ->user()
+        ->isSosmedSpesialis();
   }
 }
 
@@ -108,10 +123,12 @@ if (!function_exists('getRoleColor')) {
   function getRoleColor($role)
   {
     return match ($role) {
+      'superadmin' => 'dark',
       'admin' => 'danger',
-      'supervisor' => 'warning',
-      'manager' => 'primary',
-      'karyawan' => 'info',
+      'finance' => 'success',
+      'creative_director' => 'primary',
+      'tim_internal' => 'info',
+      'sosmed_spesialis' => 'warning',
       default => 'secondary',
     };
   }
@@ -127,11 +144,13 @@ if (!function_exists('getRoleLabel')) {
   function getRoleLabel($role)
   {
     return match ($role) {
+      'superadmin' => 'Superadmin',
       'admin' => 'Admin',
-      'supervisor' => 'Supervisor',
-      'manager' => 'Manager',
-      'karyawan' => 'Karyawan',
-      default => ucfirst($role),
+      'finance' => 'Finance',
+      'creative_director' => 'Creative Director',
+      'tim_internal' => 'Tim Internal',
+      'sosmed_spesialis' => 'Sosmed Spesialis',
+      default => ucfirst(str_replace('_', ' ', $role)),
     };
   }
 }
@@ -146,10 +165,12 @@ if (!function_exists('getRoleIcon')) {
   function getRoleIcon($role)
   {
     return match ($role) {
+      'superadmin' => 'ti-shield',
       'admin' => 'ti-crown',
-      'supervisor' => 'ti-radar',
-      'manager' => 'ti-briefcase',
-      'karyawan' => 'ti-user',
+      'finance' => 'ti-wallet',
+      'creative_director' => 'ti-palette',
+      'tim_internal' => 'ti-users',
+      'sosmed_spesialis' => 'ti-brand-instagram',
       default => 'ti-user-circle',
     };
   }
@@ -165,9 +186,9 @@ if (!function_exists('getRoleDashboardRoute')) {
   function getRoleDashboardRoute($role)
   {
     return match ($role) {
+      'superadmin' => route('admin.dashboard'),
       'admin' => route('admin.dashboard'),
-      'supervisor' => route('supervisor.dashboard'),
-      'manager' => route('manager.dashboard'),
+      'creative_director' => route('admin.dashboard'),
       default => route('pages-home'),
     };
   }
@@ -183,9 +204,10 @@ if (!function_exists('getAvailableRoles')) {
   {
     return [
       'admin' => 'Admin',
-      'supervisor' => 'Supervisor',
-      'manager' => 'Manager',
-      'karyawan' => 'Karyawan',
+      'finance' => 'Finance',
+      'creative_director' => 'Creative Director',
+      'tim_internal' => 'Tim Internal',
+      'sosmed_spesialis' => 'Sosmed Spesialis',
     ];
   }
 }

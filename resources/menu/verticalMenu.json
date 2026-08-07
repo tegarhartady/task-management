@@ -6,25 +6,9 @@
       "icon": "menu-icon tf-icons ti ti-smart-home",
       "slug": "admin.dashboard",
       "roles": [
-        "admin"
-      ]
-    },
-    {
-      "url": "/supervisor-dashboard",
-      "name": "Dashboard",
-      "icon": "menu-icon tf-icons ti ti-smart-home",
-      "slug": "supervisor.dashboard",
-      "roles": [
-        "supervisor"
-      ]
-    },
-    {
-      "url": "/manager-dashboard",
-      "name": "Dashboard",
-      "icon": "menu-icon tf-icons ti ti-smart-home",
-      "slug": "manager.dashboard",
-      "roles": [
-        "manager"
+        "superadmin",
+        "admin",
+        "creative_director"
       ]
     },
     {
@@ -33,7 +17,9 @@
       "icon": "menu-icon tf-icons ti ti-smart-home",
       "slug": "pages-home",
       "roles": [
-        "karyawan"
+        "finance",
+        "tim_internal",
+        "sosmed_spesialis"
       ]
     },
     {
@@ -42,10 +28,11 @@
       "icon": "menu-icon tf-icons ti ti-list-check",
       "slug": "tasks.index",
       "roles": [
+        "superadmin",
         "admin",
-        "supervisor",
-        "manager",
-        "karyawan"
+        "creative_director",
+        "tim_internal",
+        "sosmed_spesialis"
       ]
     },
     {
@@ -54,10 +41,10 @@
       "icon": "menu-icon tf-icons ti ti-book",
       "slug": "pages-content",
       "roles": [
+        "superadmin",
         "admin",
-        "supervisor",
-        "manager",
-        "karyawan"
+        "creative_director",
+        "sosmed_spesialis"
       ]
     },
     {
@@ -66,10 +53,11 @@
       "icon": "menu-icon tf-icons ti ti-crown",
       "slug": "pages-performance",
       "roles": [
+        "superadmin",
         "admin",
-        "supervisor",
-        "manager",
-        "karyawan"
+        "creative_director",
+        "tim_internal",
+        "sosmed_spesialis"
       ]
     },
     {
@@ -78,10 +66,12 @@
       "icon": "menu-icon tf-icons ti ti-receipt",
       "slug": "pages-reimburs",
       "roles": [
+        "superadmin",
         "admin",
-        "supervisor",
-        "manager",
-        "karyawan"
+        "creative_director",
+        "finance",
+        "tim_internal",
+        "sosmed_spesialis"
       ]
     },
     {
@@ -91,7 +81,8 @@
       "slug": "brands.index",
       "roles": [
         "superadmin",
-        "admin"
+        "admin",
+        "creative_director"
       ]
     },
     {
@@ -101,7 +92,8 @@
       "slug": "content_types.index",
       "roles": [
         "superadmin",
-        "admin"
+        "admin",
+        "creative_director"
       ]
     },
     {
@@ -109,6 +101,17 @@
       "name": "User Management",
       "icon": "menu-icon tf-icons ti ti-users",
       "slug": "users.index",
+      "roles": [
+        "superadmin",
+        "admin",
+        "creative_director"
+      ]
+    },
+    {
+      "url": "/roles",
+      "name": "Master Role",
+      "icon": "menu-icon tf-icons ti ti-settings",
+      "slug": "roles.index",
       "roles": [
         "superadmin",
         "admin"
@@ -122,9 +125,10 @@
       "roles": [
         "superadmin",
         "admin",
-        "supervisor",
-        "manager",
-        "karyawan"
+        "finance",
+        "creative_director",
+        "tim_internal",
+        "sosmed_spesialis"
       ]
     }
   ]

@@ -39,7 +39,7 @@ class PageContent extends Controller
     }
 
     $user = auth()->user();
-    if ($user->role === 'karyawan') {
+    if ($user->isSosmedSpesialis()) {
       $query->whereHas('assignees', function ($q) use ($user) {
         $q->where('user_id', $user->id);
       });
@@ -49,7 +49,7 @@ class PageContent extends Controller
 
     // Get stats
     $allBriefsQuery = Brief::query();
-    if ($user->role === 'karyawan') {
+    if ($user->isSosmedSpesialis()) {
       $allBriefsQuery->whereHas('assignees', function ($q) use ($user) {
         $q->where('user_id', $user->id);
       });
@@ -87,10 +87,10 @@ class PageContent extends Controller
 
   public function create()
   {
-    $karyawan = User::where('role', 'karyawan')->where('is_active', true)->get();
+    $assignees = User::whereIn('role', ['tim_internal', 'sosmed_spesialis'])->where('is_active', true)->get();
     $brands = \App\Models\Brand::where('is_active', true)->get();
     $contentTypes = \App\Models\ContentType::where('is_active', true)->get();
-    return view('content.pages.pages-content-create', compact('karyawan', 'brands', 'contentTypes'));
+    return view('content.pages.pages-content-create', compact('assignees', 'brands', 'contentTypes'));
   }
 
   public function store(Request $request)

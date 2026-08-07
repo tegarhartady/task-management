@@ -36,11 +36,7 @@ class TaskController extends Controller
     
     // Get base query for stats (without status/priority filters)
     $statsQuery = Task::query();
-    if ($user->isManager()) {
-      $statsQuery->where(function ($q) use ($user) {
-        $q->where('created_by', $user->id)->orWhere('assigned_to', $user->id);
-      });
-    } elseif (!$user->isAdmin() && !$user->isSupervisor()) {
+    if (!$user->isAdmin() && !$user->isCreativeDirector()) {
       $statsQuery->where(function ($q) use ($user) {
         $q->where('assigned_to', $user->id)->orWhere('created_by', $user->id);
       });
@@ -57,12 +53,8 @@ class TaskController extends Controller
         ->count();
 
     // Get tasks based on user role (with filters)
-    if ($user->isAdmin() || $user->isSupervisor()) {
+    if ($user->isAdmin() || $user->isCreativeDirector()) {
       $tasks = $query->latest()->paginate(5);
-    } elseif ($user->isManager()) {
-      $tasks = $query->where(function ($q) use ($user) {
-        $q->where('created_by', $user->id)->orWhere('assigned_to', $user->id);
-      })->latest()->paginate(5);
     } else {
       $tasks = $query->where(function ($q) use ($user) {
         $q->where('assigned_to', $user->id)->orWhere('created_by', $user->id);
@@ -135,11 +127,9 @@ class TaskController extends Controller
     $validated['created_by'] = auth()->id();
     $validated['status'] = 'Not Started';
 
-    // Auto-assign to creator if they are karyawan (employee)
+    // Auto-assign to creator if they are tim_internal
     if (
-      auth()
-        ->user()
-        ->isKaryawan() &&
+      (auth()->user()->isTimInternal() || auth()->user()->isSosmedSpesialis()) &&
       empty($validated['assigned_to'])
     ) {
       $validated['assigned_to'] = auth()->id();
@@ -323,8 +313,8 @@ class TaskController extends Controller
     $request->validate(['comment' => 'required|string']);
 
     // Status tetap "In Progress", progress tidak berubah
-    // Reset check-in/out times so karyawan can check-in again for revision
-    // Karyawan bisa revisi dan submit lagi
+    // Reset check-in/out times so assignee can check-in again for revision
+    // Assignee bisa revisi dan submit lagi
     $task->update([
       'reviewed_by' => auth()->id(),
       'checked_in_at' => null,
@@ -338,7 +328,7 @@ class TaskController extends Controller
       'type' => 'rejection',
     ]);
 
-    return back()->with('success', 'Task rejected! Karyawan can revise and resubmit.');
+    return back()->with('success', 'Task rejected! Assignee can revise and resubmit.');
   }
 
   public function addComment(Task $task, Request $request)

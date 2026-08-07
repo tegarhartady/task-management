@@ -31,6 +31,28 @@ return new class extends Migration
 
     public function down(): void
     {
-        // No rollback needed for this fix
+        Schema::create('task_user', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('task_id')->constrained('tasks')->onDelete('cascade');
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->timestamps();
+        });
+
+        $tasks = DB::table('tasks')->whereNotNull('assigned_to')->get();
+        foreach ($tasks as $task) {
+            DB::table('task_user')->insert([
+                'task_id' => $task->id,
+                'user_id' => $task->assigned_to,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+        }
+
+        Schema::table('tasks', function (Blueprint $table) {
+            if (DB::getDriverName() !== 'sqlite') {
+                $table->dropForeign(['assigned_to']);
+            }
+            $table->dropColumn('assigned_to');
+        });
     }
 };

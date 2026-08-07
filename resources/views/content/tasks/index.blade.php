@@ -236,8 +236,8 @@ $user = auth()->user();
               </div>
             </div>
 
-            <!-- Assign To (Hanya untuk Admin/Supervisor/Manager) -->
-            @if(!$user->isKaryawan())
+            <!-- Assign To (Hanya untuk Admin/Creative Director) -->
+            @if($user->isAdmin() || $user->isCreativeDirector())
               <div class="col-md-6">
                 <div class="mb-3">
                   <label class="form-label">Assign To</label>

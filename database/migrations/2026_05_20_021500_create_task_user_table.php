@@ -31,7 +31,9 @@ return new class extends Migration
 
         // Drop assigned_to column from tasks table
         Schema::table('tasks', function (Blueprint $table) {
-            $table->dropForeign(['assigned_to']);
+            if (\Illuminate\Support\Facades\DB::getDriverName() !== 'sqlite') {
+                $table->dropForeign(['assigned_to']);
+            }
             $table->dropColumn('assigned_to');
         });
     }

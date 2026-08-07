@@ -25,43 +25,53 @@ class UserSeeder extends Seeder
       ]
     );
 
-    // Supervisor User
+    // Finance User
     User::firstOrCreate(
-      ['email' => 'supervisor@example.com'],
+      ['email' => 'finance@example.com'],
       [
-        'name' => 'Rangga Supervisor',
+        'name' => 'Fernen Finance',
         'password' => Hash::make('password123'),
-        'role' => 'supervisor',
+        'role' => 'finance',
         'is_active' => true,
       ]
     );
 
-    // Manager User
+    // Creative Director User
     User::firstOrCreate(
-      ['email' => 'manager@example.com'],
+      ['email' => 'creative@example.com'],
       [
-        'name' => 'Fernen Manager',
+        'name' => 'Rangga Creative',
         'password' => Hash::make('password123'),
-        'role' => 'manager',
+        'role' => 'creative_director',
+        'is_active' => true,
+      ]
+    );
+    
+    // Sosmed Spesialis User
+    User::firstOrCreate(
+      ['email' => 'sosmed@example.com'],
+      [
+        'name' => 'Dila Sosmed',
+        'password' => Hash::make('password123'),
+        'role' => 'sosmed_spesialis',
         'is_active' => true,
       ]
     );
 
-    // Regular Karyawan Users
-    $karyawanUsers = [
-      ['name' => 'Dila Karyawan', 'email' => 'dila@example.com'],
-      ['name' => 'Budi Karyawan', 'email' => 'budi@example.com'],
-      ['name' => 'Siti Karyawan', 'email' => 'siti@example.com'],
-      ['name' => 'Ahmad Karyawan', 'email' => 'ahmad@example.com'],
+    // Tim Internal Users
+    $timInternalUsers = [
+      ['name' => 'Budi Internal', 'email' => 'budi@example.com'],
+      ['name' => 'Siti Internal', 'email' => 'siti@example.com'],
+      ['name' => 'Ahmad Internal', 'email' => 'ahmad@example.com'],
     ];
 
-    foreach ($karyawanUsers as $user) {
+    foreach ($timInternalUsers as $user) {
       User::firstOrCreate(
         ['email' => $user['email']],
         [
           'name' => $user['name'],
           'password' => Hash::make('password123'),
-          'role' => 'karyawan',
+          'role' => 'tim_internal',
           'is_active' => true,
         ]
       );

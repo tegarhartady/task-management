@@ -21,5 +21,15 @@ class AppServiceProvider extends ServiceProvider
   public function boot(): void
   {
     Paginator::useBootstrapFive();
+
+    if ($this->app->environment('testing') && \Illuminate\Support\Facades\DB::connection()->getDriverName() === 'sqlite') {
+        try {
+            \Illuminate\Support\Facades\DB::getDoctrineSchemaManager()
+                ->getDatabasePlatform()
+                ->registerDoctrineTypeMapping('enum', 'string');
+        } catch (\Exception $e) {
+            // Ignore if doctrine isn't fully loaded
+        }
+    }
   }
 }
